@@ -1,0 +1,24 @@
+{
+  "name": "agri-advisor-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI-Powered Agriculture Crop Advisory Assistant Monorepo",
+  "scripts": {
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "build:server": "cd server && npm run build",
+    "build:client": "cd client && npm run build",
+    "lint": "cd server && npm run lint && cd ../client && npm run lint",
+    "test": "cd server && npm test && cd ../client && npm test"
+  },
+  "keywords": [
+    "agritech",
+    "crop-advisory",
+    "gemini",
+    "supabase",
+    "react",
+    "express"
+  ],
+  "author": "AgriPulse Engineering",
+  "license": "UNLICENSED"
+}
