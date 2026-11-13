@@ -1,0 +1,10 @@
+{
+  "buildCommand": "cd agri-advisor/client && npm install && npm run build",
+  "outputDirectory": "agri-advisor/client/dist",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "agri-advisor-app",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "build": "cd agri-advisor/client && npm install && npm run build",
+    "dev": "cd agri-advisor/client && npm run dev"
+  }
+}
