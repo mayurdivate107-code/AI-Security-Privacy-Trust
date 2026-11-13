@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { ArrowLeft, BookOpen, Clock, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, Clock, ShieldCheck } from 'lucide-react';
 import { api } from '../../lib/api.js';
 import { KnowledgeArticle } from '../../types/index.js';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner.js';

@@ -11,7 +11,6 @@ export const api = axios.create({
 });
 
 // Request interceptor to automatically attach authenticated JWT
-api.interceptors.request.async = true;
 api.interceptors.request.use(async (config) => {
   try {
     const { data: { session } } = await supabase.auth.getSession();

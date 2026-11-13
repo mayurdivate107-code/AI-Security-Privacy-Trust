@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Compass, Sparkles, ArrowRight } from 'lucide-react';
+import { Compass, Sparkles } from 'lucide-react';
 import { api } from '../../lib/api.js';
 import { CropRecommendationFormSchema, CropRecommendationFormValues } from '../../schemas/index.js';
 import { FormInput } from '../../components/forms/FormInput.js';

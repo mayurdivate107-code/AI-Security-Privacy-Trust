@@ -1,13 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Sprout,
   ScanLine,
   FlaskConical,
   Droplets,
   ArrowRight,
   ShieldCheck,
-  CheckCircle2,
   TrendingUp,
   Cpu,
 } from 'lucide-react';

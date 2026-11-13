@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Settings, Shield, Sliders } from 'lucide-react';
+import { Shield, Sliders } from 'lucide-react';
 import { FormSelect } from '../../components/forms/FormSelect.js';
 
 export const SettingsPage: React.FC = () => {

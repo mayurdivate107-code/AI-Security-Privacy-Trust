@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Sprout, Bell, User as UserIcon, LogOut, Menu, X } from 'lucide-react';
+import { Sprout, Bell, User as UserIcon, LogOut, Menu } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext.js';
 import { useFarmContext } from '../../contexts/FarmContext.js';
 

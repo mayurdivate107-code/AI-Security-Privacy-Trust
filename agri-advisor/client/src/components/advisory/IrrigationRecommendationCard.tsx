@@ -1,5 +1,5 @@
 import React from 'react';
-import { Droplets, ShieldAlert, Sparkles, Waves } from 'lucide-react';
+import { Droplets, ShieldAlert, Waves } from 'lucide-react';
 import { ConfidenceIndicator } from './ConfidenceIndicator.js';
 import { AdvisoryDisclaimer } from './AdvisoryDisclaimer.js';
 

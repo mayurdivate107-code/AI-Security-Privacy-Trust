@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, AlertCircle, Sparkles, CheckCircle, ExternalLink } from 'lucide-react';
+import { Sparkles, CheckCircle } from 'lucide-react';
 import { DiseaseSeverityBadge } from './DiseaseSeverityBadge.js';
 import { ConfidenceIndicator } from './ConfidenceIndicator.js';
 import { AdvisoryDisclaimer } from './AdvisoryDisclaimer.js';

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScanLine, Sparkles, UploadCloud } from 'lucide-react';
+import { ScanLine, Sparkles } from 'lucide-react';
 import { api } from '../../lib/api.js';
 import { ImageUploader } from '../../components/forms/ImageUploader.js';
 import { FormInput } from '../../components/forms/FormInput.js';

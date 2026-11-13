@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlaskConical, AlertCircle, Leaf, Sparkles } from 'lucide-react';
+import { FlaskConical, Leaf } from 'lucide-react';
 import { ConfidenceIndicator } from './ConfidenceIndicator.js';
 import { AdvisoryDisclaimer } from './AdvisoryDisclaimer.js';
 

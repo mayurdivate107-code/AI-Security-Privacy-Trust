@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { BookOpen, Search, ArrowRight, BookCheck } from 'lucide-react';
+import { BookOpen, Search, ArrowRight } from 'lucide-react';
 import { api } from '../../lib/api.js';
 import { KnowledgeArticle } from '../../types/index.js';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner.js';
