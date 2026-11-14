@@ -1,12 +1,14 @@
 import axios from 'axios';
 
-const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+// When deployed on Vercel, default to relative '/api' endpoint if no external URL provided
+const baseURL = import.meta.env.VITE_API_URL || '/api';
 
 export const api = axios.create({
   baseURL,
   headers: {
     'Content-Type': 'application/json',
   },
+  timeout: 8000,
 });
 
 // Automatic JWT Bearer Request Interceptor

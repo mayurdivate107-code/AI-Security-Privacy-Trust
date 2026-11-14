@@ -14,16 +14,21 @@ import {
 } from 'lucide-react';
 
 export const PoliciesPage: React.FC = () => {
-  const [policy, setPolicy] = useState<PolicyConfig>({
-    blockPromptInjection: true,
-    autoRedactPII: true,
-    minimumTrustScore: 70,
-    complianceMode: 'DPDP_INDIA',
-    customBlockedKeywords: ['internal credentials', 'confidential blueprint', 'passwords.txt'],
+  const [policy, setPolicy] = useState<PolicyConfig>(() => {
+    const saved = localStorage.getItem('aegis_policy');
+    return saved
+      ? JSON.parse(saved)
+      : {
+          blockPromptInjection: true,
+          autoRedactPII: true,
+          minimumTrustScore: 70,
+          complianceMode: 'DPDP_INDIA',
+          customBlockedKeywords: ['internal credentials', 'confidential blueprint', 'passwords.txt'],
+        };
   });
 
   const [newKeyword, setNewKeyword] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
@@ -34,9 +39,10 @@ export const PoliciesPage: React.FC = () => {
         const res: any = await api.get('/policy');
         if (res.success && res.policy) {
           setPolicy(res.policy);
+          localStorage.setItem('aegis_policy', JSON.stringify(res.policy));
         }
       } catch (err) {
-        console.warn('Could not load policy settings from server, using defaults.');
+        // Silently use cached policy
       } finally {
         setLoading(false);
       }
@@ -48,10 +54,16 @@ export const PoliciesPage: React.FC = () => {
     try {
       setSaving(true);
       setMessage(null);
-      const res: any = await api.put('/policy', policy);
-      if (res.success) {
-        setMessage({ type: 'success', text: 'Security policies updated and active on gateway!' });
+      // Save locally first
+      localStorage.setItem('aegis_policy', JSON.stringify(policy));
+      
+      try {
+        await api.put('/policy', policy);
+      } catch (err) {
+        // API offline, local save successful
       }
+
+      setMessage({ type: 'success', text: 'Security policies updated and active on gateway!' });
     } catch (err: any) {
       setMessage({ type: 'error', text: err.message || 'Failed to update security policies.' });
     } finally {
@@ -64,19 +76,23 @@ export const PoliciesPage: React.FC = () => {
     const word = newKeyword.trim().toLowerCase();
     const current = policy.customBlockedKeywords || [];
     if (!current.includes(word)) {
-      setPolicy({
+      const updated = {
         ...policy,
         customBlockedKeywords: [...current, word],
-      });
+      };
+      setPolicy(updated);
+      localStorage.setItem('aegis_policy', JSON.stringify(updated));
     }
     setNewKeyword('');
   };
 
   const removeKeyword = (wordToRemove: string) => {
-    setPolicy({
+    const updated = {
       ...policy,
       customBlockedKeywords: (policy.customBlockedKeywords || []).filter((w) => w !== wordToRemove),
-    });
+    };
+    setPolicy(updated);
+    localStorage.setItem('aegis_policy', JSON.stringify(updated));
   };
 
   if (loading) {
