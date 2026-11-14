@@ -1,9 +1,23 @@
 {
-  "name": "agri-advisor-app",
-  "private": true,
+  "name": "aegisai-monorepo",
   "version": "1.0.0",
+  "private": true,
+  "description": "Enterprise AI Privacy Firewall, Threat Detector & Trust Auditor",
   "scripts": {
-    "build": "cd agri-advisor/client && npm install && npm run build",
-    "dev": "cd agri-advisor/client && npm run dev"
-  }
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "build:client": "cd client && npm run build",
+    "seed": "cd server && npm run seed",
+    "install:all": "npm install --prefix server && npm install --prefix client",
+    "build": "cd client && npm install && npm run build"
+  },
+  "keywords": [
+    "ai-security",
+    "privacy-firewall",
+    "prompt-injection",
+    "dpdp-act-2023",
+    "gemini-2.5",
+    "trust-auditor"
+  ],
+  "author": "AegisAI Team"
 }
