@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { api } from '../lib/api.js';
+import { api, isBackendAlive } from '../lib/api.js';
 import { AuditLog } from '../types/index.js';
 import { ThreatBadge } from '../components/common/ThreatBadge.js';
 import { ActionBadge } from '../components/common/ActionBadge.js';
@@ -29,6 +29,31 @@ export const AuditLogsPage: React.FC = () => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const fetchLogs = async () => {
+    const online = await isBackendAlive();
+    if (!online) {
+      // Filter default logs client-side
+      let filtered = [...DEFAULT_LOGS];
+      if (actionFilter !== 'ALL') {
+        filtered = filtered.filter((l) => l.actionTaken === actionFilter);
+      }
+      if (threatFilter !== 'ALL') {
+        filtered = filtered.filter((l) => l.threatLevel === threatFilter);
+      }
+      if (search.trim()) {
+        const q = search.toLowerCase();
+        filtered = filtered.filter(
+          (l) =>
+            l.sanitizedPrompt.toLowerCase().includes(q) ||
+            l.aiExplanation.toLowerCase().includes(q) ||
+            l.threatCategory.toLowerCase().includes(q)
+        );
+      }
+      setLogs(filtered);
+      setTotal(filtered.length);
+      setTotalPages(Math.ceil(filtered.length / 12) || 1);
+      return;
+    }
+
     try {
       setLoading(true);
       const params: any = { page, limit: 12 };
@@ -45,7 +70,6 @@ export const AuditLogsPage: React.FC = () => {
       }
     } catch (err: any) {
       console.warn('[AegisAI Audit Ledger] Applying client-side audit log query:', err.message);
-      // Filter default logs client-side
       let filtered = [...DEFAULT_LOGS];
       if (actionFilter !== 'ALL') {
         filtered = filtered.filter((l) => l.actionTaken === actionFilter);

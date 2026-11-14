@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { api } from '../lib/api.js';
+import { api, isBackendAlive } from '../lib/api.js';
 import { DashboardStats } from '../types/index.js';
 import { StatCard } from '../components/common/StatCard.js';
 import { ThreatTimelineChart } from '../components/charts/ThreatTimelineChart.js';
@@ -23,6 +23,11 @@ export const DashboardPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const fetchStats = async () => {
+    const online = await isBackendAlive();
+    if (!online) {
+      setData(DEFAULT_STATS);
+      return;
+    }
     try {
       setLoading(true);
       const res: any = await api.get('/dashboard/stats');

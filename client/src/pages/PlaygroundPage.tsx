@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { api } from '../lib/api.js';
+import { api, isBackendAlive } from '../lib/api.js';
 import { InspectionResult, PolicyConfig } from '../types/index.js';
 import { PresetButtons } from '../components/playground/PresetButtons.js';
 import { PromptEditor } from '../components/playground/PromptEditor.js';
@@ -30,6 +30,8 @@ export const PlaygroundPage: React.FC = () => {
   // Fetch current policy from backend on load (or use local)
   useEffect(() => {
     const fetchPolicy = async () => {
+      const online = await isBackendAlive();
+      if (!online) return;
       try {
         const res: any = await api.get('/policy');
         if (res.success && res.policy) {
@@ -54,10 +56,26 @@ export const PlaygroundPage: React.FC = () => {
   const handleInspect = async () => {
     if (!prompt.trim()) return;
 
-    try {
-      setIsLoading(true);
-      setError(null);
+    setIsLoading(true);
+    setError(null);
 
+    const runClientSide = () => {
+      const pii = clientRedactPII(prompt);
+      const sanitized = activePolicy.autoRedactPII ? pii.sanitizedText : prompt;
+      const clientInspection = clientAnalyzeThreat(prompt, sanitized, pii.detectedPII, activePolicy);
+      setTimeout(() => {
+        setResult(clientInspection);
+        setIsLoading(false);
+      }, 400);
+    };
+
+    const online = await isBackendAlive();
+    if (!online) {
+      runClientSide();
+      return;
+    }
+
+    try {
       const res: any = await api.post('/firewall/analyze-and-chat', {
         prompt,
         policyOverrides: activePolicy,
@@ -65,24 +83,15 @@ export const PlaygroundPage: React.FC = () => {
 
       if (res.success) {
         setResult(res);
+        setIsLoading(false);
         return;
       }
     } catch (err: any) {
       console.warn('[AegisAI Firewall Engine] Executing client-side resilience pipeline:', err.message);
-      // Run deterministic client-side PII redactor and threat auditor
-      const pii = clientRedactPII(prompt);
-      const sanitized = activePolicy.autoRedactPII ? pii.sanitizedText : prompt;
-      const clientInspection = clientAnalyzeThreat(prompt, sanitized, pii.detectedPII, activePolicy);
-
-      // Simulate realistic inspection latency
-      setTimeout(() => {
-        setResult(clientInspection);
-        setIsLoading(false);
-      }, 400);
+      runClientSide();
       return;
-    } finally {
-      setIsLoading(false);
     }
+    setIsLoading(false);
   };
 
   return (

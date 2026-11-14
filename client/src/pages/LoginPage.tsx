@@ -19,31 +19,19 @@ export const LoginPage: React.FC = () => {
       return;
     }
 
-    try {
-      setLoading(true);
-      setError(null);
-      await login(email, password);
-      navigate('/dashboard');
-    } catch (err: any) {
-      // Even if network fails, AuthContext provisions offline session
-      navigate('/dashboard');
-    } finally {
-      setLoading(false);
-    }
+    setLoading(true);
+    setError(null);
+    await login(email, password);
+    setLoading(false);
+    navigate('/dashboard');
   };
 
   const handleDemoLogin = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      await demoLogin();
-      navigate('/dashboard');
-    } catch (err: any) {
-      // Offline demo fallback
-      navigate('/dashboard');
-    } finally {
-      setLoading(false);
-    }
+    setLoading(true);
+    setError(null);
+    await demoLogin();
+    setLoading(false);
+    navigate('/dashboard');
   };
 
   return (

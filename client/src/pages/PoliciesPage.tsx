@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { api } from '../lib/api.js';
+import { api, isBackendAlive } from '../lib/api.js';
 import { PolicyConfig, ComplianceFramework } from '../types/index.js';
 import {
   Shield,
@@ -34,6 +34,11 @@ export const PoliciesPage: React.FC = () => {
 
   useEffect(() => {
     const fetchPolicy = async () => {
+      const online = await isBackendAlive();
+      if (!online) {
+        setLoading(false);
+        return;
+      }
       try {
         setLoading(true);
         const res: any = await api.get('/policy');

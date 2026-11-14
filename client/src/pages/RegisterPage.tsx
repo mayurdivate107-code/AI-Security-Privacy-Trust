@@ -21,16 +21,11 @@ export const RegisterPage: React.FC = () => {
       return;
     }
 
-    try {
-      setLoading(true);
-      setError(null);
-      await register(name, email, password, role);
-      navigate('/dashboard');
-    } catch (err: any) {
-      navigate('/dashboard');
-    } finally {
-      setLoading(false);
-    }
+    setLoading(true);
+    setError(null);
+    await register(name, email, password, role);
+    setLoading(false);
+    navigate('/dashboard');
   };
 
   return (

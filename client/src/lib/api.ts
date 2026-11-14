@@ -8,8 +8,25 @@ export const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 8000,
+  timeout: 3000,
 });
+
+/**
+ * Quick connectivity probe — resolves to true if the backend API is alive,
+ * false otherwise. Result is cached for the page session.
+ */
+let _backendAlive: boolean | null = null;
+export const isBackendAlive = async (): Promise<boolean> => {
+  if (_backendAlive !== null) return _backendAlive;
+  try {
+    await axios.get(`${baseURL.replace(/\/api$/, '')}/health`, { timeout: 2000 });
+    _backendAlive = true;
+  } catch {
+    _backendAlive = false;
+  }
+  return _backendAlive;
+};
+export const resetBackendProbe = () => { _backendAlive = null; };
 
 // Automatic JWT Bearer Request Interceptor
 api.interceptors.request.use((config) => {
